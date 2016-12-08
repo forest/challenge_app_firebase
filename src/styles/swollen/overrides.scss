@@ -1,0 +1,21 @@
+// Striped row for Bootstrap row contexts
+tr.table-success:nth-of-type(even) > td {
+    background-color: #F1F6EE;
+}
+tr.table-info:nth-of-type(even) > td {
+    background-color: #F4F9FC;
+}
+tr.table-warning:nth-of-type(even) > td {
+    background-color: #FFFEF5;
+}
+tr.table-danger:nth-of-type(even) > td {
+    background-color: #F9F3F3;
+}
+
+// Remove the God-awful blue focus highlight
+button:focus, .btn:focus,
+button:active:focus, .btn:active:focus {
+    outline-style: none;
+    outline-color: transparent;
+    outline-width: 0;
+}

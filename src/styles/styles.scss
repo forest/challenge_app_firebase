@@ -1,0 +1,12 @@
+// Import project variables
+@import "swollen/variables";
+
+// Import component css/scss
+$fa-font-path: "../../node_modules/font-awesome/fonts/";
+@import "../../node_modules/font-awesome/scss/font-awesome.scss";
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
+
+// Import project styles
+@import "swollen/overrides";
+@import "swollen/components";
+@import "swollen/layout";

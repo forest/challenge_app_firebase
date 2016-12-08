@@ -1,0 +1,81 @@
+/* Layout variables
+-------------------------------------------------- */
+$navbar-height: 54px;
+
+/* Layout styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  overflow: hidden;
+}
+
+#spa__wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  &.with-navbar{
+    top: $navbar-height;
+  }
+}
+
+#spa__page-wrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+
+  router-view {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+  }
+}
+
+#spa__page-content {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  overflow: scroll;
+}
+
+#spa__page-content-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 50;
+  &.busy {
+    background-color: rgba(255, 255, 255, 0.75);
+  }
+}
+
+#flex__page-content {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  overflow: hidden;
+
+  .flex-center {
+    display: flex;
+    &.vertical {
+      align-items: center;
+    }
+    &.horizontal {
+      justify-content: center;
+    }
+    .container, .container-fluid { width: 100%; }
+  }
+}
