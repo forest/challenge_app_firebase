@@ -158,6 +158,24 @@
             "resources": [
               "css/bootstrap.css"
             ]
+          },
+          "ramda",
+          {
+            "name": "redux",
+            "path": "../node_modules/redux/dist",
+            "main": "redux"
+          },
+          {
+            "name": "redux-logger",
+            "path": "../node_modules/redux-logger/dist",
+            "main": "index"
+          },
+          "redux-thunk",
+          "redux-devtools-extension",
+          {
+            "name": "firebase",
+            "path": "../node_modules/firebase/",
+            "main": "firebase"
           }
         ]
       }
