@@ -11,23 +11,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>4</td>
-          <td>100</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Jeremy</td>
-          <td>3</td>
-          <td>75</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Forest</td>
-          <td>2</td>
-          <td>50</td>
+        <tr repeat.for="stat of todaysStats | sort:'total'">
+          <th scope="row">${$index+1}</th>
+          <td>${stat.name}</td>
+          <td>${stat.total}</td>
+          <td>${stat.total * 25}</td>
         </tr>
       </tbody>
     </table>

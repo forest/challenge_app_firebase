@@ -1,8 +1,8 @@
 import {bindable, customElement, inject, computedFrom} from 'aurelia-framework';
 import { Router } from 'aurelia-router';
-import { reduxStore } from './store';
-import { getCurrentChallenge, getChallenges } from './reducers/selectors'
-import { loadChallenges, stopWatchingChallenges, changeCurrentChallenge } from './actions/challenges'
+import { reduxStore } from '../../store';
+import { getCurrentChallenge, getChallenges } from '../../reducers/selectors'
+import { loadChallenges, stopWatchingChallenges, changeCurrentChallenge } from '../../actions/challenges'
 
 @customElement('nav-bar')
 @inject(reduxStore)

@@ -1,18 +1,19 @@
 import { inject, computedFrom } from 'aurelia-framework';
 import { reduxStore } from '../store';
-import { getChallenges } from '../reducers/selectors'
+import { getStats, getTodaysStats } from '../reducers/selectors';
 
 @inject(reduxStore)
 export class Dashboard {
   unsubscribe: any = null;
   isLoading: boolean = false;
+  todaysStats: any = [];
 
   constructor(private store: any) {
     // subscribe to data changes
-    // this.unsubscribe = this.store.subscribe(() => {
-    //   this.update();
-    // });
-    // this.update();
+    this.unsubscribe = this.store.subscribe(() => {
+      this.update();
+    });
+    this.update();
   }
 
   /**
@@ -38,5 +39,7 @@ export class Dashboard {
    */
   update() {
     const state = this.store.getState();
+
+    this.todaysStats = getTodaysStats(state);
   }
 }

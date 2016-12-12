@@ -2,13 +2,9 @@
   <div class="container-fluid mt10">
     <p class="lead">Completed rounds: 2</p>
 
-    <div class="btn-group" data-toggle="buttons">
-      <label class="btn btn-secondary btn-lg active">
-        <input type="radio" name="options" id="option1" autocomplete="off" checked> <i class="fa fa-minus"></i>
-      </label>
-      <label class="btn btn-success btn-lg">
-        <input type="radio" name="options" id="option2" autocomplete="off"> <i class="fa fa-plus"></i>
-      </label>
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-lg btn-secondary" click.delegate="decrement()"><i class="fa fa-minus"></i></button>
+      <button type="button" class="btn btn-lg btn-success" click.delegate="increment()"><i class="fa fa-plus"></i></button>
     </div>
   </div>
 </template>

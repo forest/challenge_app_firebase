@@ -1,7 +1,9 @@
 import { combineReducers } from 'redux';
 import { RESET_ERROR_MESSAGE } from '../actions/errors';
 // import * as firebase from 'firebase';
-import { currentChallenge, challenges } from './challenges';
+import { challenges } from './challenges';
+import { currentChallenge } from './current-challenge';
+import { results } from './results';
 
 // Initialize Firebase
 // const firebaseConfig = {
@@ -35,7 +37,8 @@ const rootReducer = combineReducers({
   // config,
   errorMessage,
   challenges,
-  currentChallenge
+  currentChallenge,
+  results
 });
 
 export default rootReducer;

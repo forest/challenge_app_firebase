@@ -1,4 +1,3 @@
-import { CHALLENGES_CURRENT_CHANGED } from '../actions/challenges'
 import * as R from 'ramda';
 
 export interface IChallengesState {
@@ -13,37 +12,33 @@ const initialState: IChallengesState = {
 
 export function challenges(state: IChallengesState = initialState, action): IChallengesState {
   let payload = {
-    "1": {
-      "key": "1",
+    "one": {
+      "key": "one",
       "name": "Push-up Challenge",
-      "people": {
+      "started": "2016-12-08T17:01:50.468Z",
+      "finished": null,
+      "members": {
         "mark": true,
         "jeremy": true,
         "forest": true
       },
+      "winner": null
     },
-    "2": {
-      "key": "2",
+    "two": {
+      "key": "two",
       "name": "Wall Sit Challenge",
-      "people": {
+      "started": null,
+      "finished": null,
+      "members": {
         "mark": true,
         "jeremy": true,
         "forest": true
-      }
+      },
+      "winner": null
     }
   };
 
   return Object.assign({}, state, {
     items: R.values(payload)
   });
-}
-
-export function currentChallenge(state: any = null, action): any {
-  switch (action.type) {
-    case CHALLENGES_CURRENT_CHANGED:
-      return Object.assign({}, state, action.payload);
-
-    default:
-      return state;
-  }
 }

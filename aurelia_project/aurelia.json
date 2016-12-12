@@ -176,7 +176,9 @@
             "name": "firebase",
             "path": "../node_modules/firebase/",
             "main": "firebase"
-          }
+          },
+          "reselect",
+          "moment"
         ]
       }
     ]
