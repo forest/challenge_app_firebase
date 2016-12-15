@@ -1,3 +1,5 @@
+import { inject } from 'aurelia-framework';
+import { EventAggregator } from 'aurelia-event-aggregator';
 import * as R from 'ramda';
 import { Types } from '../types';
 
@@ -5,57 +7,67 @@ export const RESULTS_WATCHING_ON = 'RESULTS_WATCHING_ON';
 export const RESULTS_WATCHING_OFF = 'RESULTS_WATCHING_OFF';
 export const RESULTS_UPDATE = 'RESULTS_UPDATE';
 
-function startWatchingResults() {
-  return { type: RESULTS_WATCHING_ON };
-}
+/**
+ * ResultActions
+ */
+@inject(EventAggregator)
+export class ResultActions {
+  constructor(private ea: EventAggregator) { }
 
-export function stopWatchingResults(challenge: Types.IChallenge) {
-  return (dispatch, getState, firebase) => {
-    if (challenge) {
-      firebase.database().ref(`results/${challenge.key}`).off();
-    }
-
-    dispatch({ type: RESULTS_WATCHING_OFF });
+  private startWatchingResults() {
+    return { type: RESULTS_WATCHING_ON };
   }
-}
 
-function updateResults(challenge: Types.IChallenge, results) {
-  return { type: RESULTS_UPDATE, payload: { challenge: challenge, results: results } };
-}
+  stopWatchingResults(challenge: Types.IChallenge) {
+    return (dispatch, getState, firebase) => {
+      if (challenge) {
+        firebase.database().ref(`results/${challenge.key}`).off();
+      }
 
-function watchResults(challenge: Types.IChallenge) {
-  return (dispatch, getState, firebase) => {
-    const state = getState();
-    const resultsRef = firebase.database().ref(`results/${challenge.key}`);
+      dispatch({ type: RESULTS_WATCHING_OFF });
+    }
+  }
 
-    resultsRef.on('value', snapshot => {
-      let results = {};
+  private updateResults(challenge: Types.IChallenge, results) {
+    return { type: RESULTS_UPDATE, payload: { challenge: challenge, results: results } };
+  }
 
-      snapshot.forEach(resultSnap => {
-        results[resultSnap.key] = resultSnap.val();
+  private watchResults(challenge: Types.IChallenge) {
+    return (dispatch, getState, firebase) => {
+      const state = getState();
+      const resultsRef = firebase.database().ref(`results/${challenge.key}`);
+
+      resultsRef.on('value', snapshot => {
+        let results = {};
+
+        snapshot.forEach(resultSnap => {
+          results[resultSnap.key] = resultSnap.val();
+        });
+
+        dispatch(this.updateResults(challenge, results));
       });
 
-      dispatch(updateResults(challenge, results));
-    });
-
-    return Promise.resolve();
-  }
-}
-
-function shouldLoadResults(state) {
-  return !state.results.watching;
-}
-
-export function loadResults(challenge: Types.IChallenge) {
-  return (dispatch, getState) => {
-    const state = getState();
-
-    if (challenge && shouldLoadResults(state)) {
-      dispatch(startWatchingResults());
-      dispatch(watchResults(challenge));
-    } else {
-      // Let the calling code know there's nothing to wait for.
       return Promise.resolve();
     }
   }
+
+  private shouldLoadResults(state) {
+    return !state.results.watching;
+  }
+
+  loadResults(challenge: Types.IChallenge) {
+    return (dispatch, getState) => {
+      const state = getState();
+
+      if (challenge && this.shouldLoadResults(state)) {
+        dispatch(this.startWatchingResults());
+        dispatch(this.watchResults(challenge));
+      } else {
+        // Let the calling code know there's nothing to wait for.
+        return Promise.resolve();
+      }
+    }
+  }
+
 }
+

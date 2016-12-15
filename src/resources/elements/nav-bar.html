@@ -3,7 +3,7 @@
     <a class="navbar-brand pt5" href="#">
       <i class="fa fa-handshake-o"></i>
     </a>
-    <ul class="nav navbar-nav">
+    <ul class="nav navbar-nav" if.bind="isLoggedIn">
       <li class="nav-item dropdown active" if.bind="challenges">
         <a class="nav-link dropdown-toggle" if.bind="currentChallenge" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${currentChallenge.name}</a>
         <a class="nav-link dropdown-toggle" if.bind="!currentChallenge" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Challenge</a>
@@ -11,13 +11,12 @@
           <a class="dropdown-item" href="#" click.delegate="changeCurrentChallenge(challenge)" repeat.for="challenge of challenges">${challenge.name}</a>
         </div>
       </li>
-      <li class="nav-item ${row.isActive ? 'active' : ''} ${row.settings.isHidden ? 'sr-only' : ''}" repeat.for="row of router.navigation">
+      <!--<li class="nav-item ${row.isActive ? 'active' : ''} ${row.settings.isHidden ? 'sr-only' : ''}" repeat.for="row of router.navigation">
         <a class="nav-link" href.bind="row.href">
-          <!--<i class="mr5 fa ${row.settings.icon}"></i>-->
           ${row.title}
           <span class="sr-only">${row.isActive ? '(current)' : ''}</span>
         </a>
-      </li>
+      </li>-->
     </ul>
     <div class="float-xs-right">
       <ul class="nav navbar-nav">

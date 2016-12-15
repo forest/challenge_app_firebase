@@ -1,23 +1,36 @@
 <template>
   <div class="container-fluid mt10">
-    <!--<p class="lead">Statistics</p>-->
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Position</th>
-          <th>Name</th>
-          <th>Rounds</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr repeat.for="stat of todaysStats | sort:'total'">
-          <th scope="row">${$index+1}</th>
-          <td>${stat.uid}</td>
-          <td>${stat.total}</td>
-          <td>${stat.total * 25}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="row">
+      <div class="col-xs-12">
+        <!--<p class="lead">Statistics</p>-->
+        <table class="table table-striped" if.bind="currentChallenge">
+          <thead>
+            <tr>
+              <th>Position</th>
+              <th>Name</th>
+              <th>Rounds</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr repeat.for="stat of todaysStats | sort:'total'">
+              <th scope="row">${$index+1}</th>
+              <td>${stat.name}</td>
+              <td>${stat.total}</td>
+              <td>${stat.total * 25}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="btn-group" role="group" if.bind="currentChallenge">
+          <button type="button" class="btn btn-lg btn-secondary" click.delegate="decrement()"><i class="fa fa-minus"></i></button>
+          <button type="button" class="btn btn-lg btn-success" click.delegate="increment()"><i class="fa fa-plus"></i></button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>

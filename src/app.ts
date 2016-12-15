@@ -1,14 +1,14 @@
 import { inject } from 'aurelia-framework';
 import { Router, RouterConfiguration } from 'aurelia-router';
 import { reduxStore } from './store';
-import { watchAuthenticated } from './actions/authentication';
+import { AuthenticationActions } from './actions/authentication';
 
-@inject(reduxStore)
+@inject(reduxStore, AuthenticationActions)
 export class App {
   router: Router;
 
-  constructor(private store: any) {
-    this.store.dispatch(watchAuthenticated());
+  constructor(private store: any, private authActions: AuthenticationActions) {
+    this.store.dispatch(this.authActions.watchAuthenticated());
   }
 
   configureRouter(config: RouterConfiguration, router: Router) {

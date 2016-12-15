@@ -5,12 +5,11 @@ import { Types } from '../types'
 
 export const getConfig = (state) => state.config
 
-export function getCurrentUser(state): Types.IAuthenticatedUser {
-  return state.appState.currentUser;
-}
-export function isUserLoggedIn(state): boolean {
-  return !!state.appState.currentUser;
-}
+export const getCurrentUser = (state): Types.IAuthenticatedUser => state.appState.currentUser
+export const isUserLoggedIn = (state): boolean => !!state.appState.currentUser
+
+export const getUsers = (state): Array<Types.IUserProfile> => state.users.data
+export const getUser = (state, uid: string): Types.IUserProfile => state.users.data[uid]
 
 export const getResults = (state) => state.results.data
 
@@ -39,11 +38,14 @@ export const getStats = createSelector(
 
 export const getTodaysStats = createSelector(
   getStats,
-  (stats) => {
+  getUsers,
+  (stats, users: Array<Types.IUserProfile>) => {
     if (stats) {
       let todaysStats = stats[moment().format("L")] || [];
-      // TODO: swap uid for user name
-      // R.map((stat) => Object.assign({}, stat, {name: users[stat["name"]]}), today)
+
+      // add user name for display
+      todaysStats = R.map((stat) => Object.assign({}, stat, {name: users[stat["uid"]].name}), todaysStats)
+
       return todaysStats;
     }
 
@@ -57,8 +59,6 @@ export const getTodaysStatsForCurrentUser = createSelector(
   (user, stats) => {
     if (user && stats) {
       let todaysStats = stats[moment().format("L")] || [];
-      // TODO: swap uid for user name
-      // R.map((stat) => Object.assign({}, stat, {name: users[stat["name"]]}), today)
       return R.find(R.propEq('uid', user.uid), todaysStats);
     }
 

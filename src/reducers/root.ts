@@ -3,6 +3,7 @@ import { RESET_ERROR_MESSAGE } from '../actions/errors';
 import { challenges } from './challenges';
 import { appState } from './app-state';
 import { results } from './results';
+import { users } from './users';
 import * as firebase from 'firebase';
 
 function config() {
@@ -27,7 +28,8 @@ const rootReducer = combineReducers({
   errorMessage,
   challenges,
   appState,
-  results
+  results,
+  users
 });
 
 export default rootReducer;

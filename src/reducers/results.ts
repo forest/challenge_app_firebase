@@ -3,7 +3,7 @@ import {
   RESULTS_WATCHING_OFF,
   RESULTS_UPDATE
 } from '../actions/results';
-import * as moment from 'moment';
+import { AUTH_LOGOUT } from '../actions/authentication';
 
 export interface IResultsState {
   watching: boolean;
@@ -34,6 +34,9 @@ export function results(state: IResultsState = initialState, action): IResultsSt
       return Object.assign({}, state, {
         data: challengeResults
       });
+
+    case AUTH_LOGOUT:
+      return Object.assign({}, state, initialState);
 
     default:
       return state;

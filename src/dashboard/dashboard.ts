@@ -1,19 +1,21 @@
 import { inject, computedFrom } from 'aurelia-framework';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import { reduxStore } from '../store';
-import { getStats, getTodaysStats, getCurrentChallenge } from '../reducers/selectors';
-import { loadResults, stopWatchingResults } from '../actions/results'
+import { getStats, getTodaysStats, getCurrentChallenge, getCurrentUser } from '../reducers/selectors';
+import { ResultActions } from '../actions/results'
 import { CHALLENGES_CURRENT_CHANGED } from '../actions/challenges'
+import { trackIncrement, trackDecrement } from '../actions/track';
 import { Types } from '../types'
 
-@inject(reduxStore, EventAggregator)
+@inject(reduxStore, EventAggregator, ResultActions)
 export class Dashboard {
   unsubscribe: any = null;
   isLoading: boolean = false;
   todaysStats: any = [];
   currentChallenge: any = null;
+  currentUser: any = null;
 
-  constructor(private store: any, private ea: EventAggregator) {
+  constructor(private store: any, private ea: EventAggregator, private resultActions: ResultActions) {
     // subscribe to data changes
     this.unsubscribe = this.store.subscribe(() => {
       this.update();
@@ -32,7 +34,7 @@ export class Dashboard {
    * @param routeConfig (description)
    */
   activate(params, routeConfig) {
-    this.store.dispatch(loadResults(this.currentChallenge));
+    this.store.dispatch(this.resultActions.loadResults(this.currentChallenge));
   }
 
   /**
@@ -40,7 +42,7 @@ export class Dashboard {
    */
   deactivate() {
     this.unsubscribe();
-    this.store.dispatch(stopWatchingResults(this.currentChallenge));
+    this.store.dispatch(this.resultActions.stopWatchingResults(this.currentChallenge));
   }
 
   /**
@@ -49,6 +51,7 @@ export class Dashboard {
   update() {
     const state = this.store.getState();
 
+    this.currentUser = getCurrentUser(state);
     this.currentChallenge = getCurrentChallenge(state);
     this.todaysStats = getTodaysStats(state);
   }
@@ -62,7 +65,15 @@ export class Dashboard {
    * @memberOf Dashboard
    */
   updateResultsSubscription(challenge: Types.IChallenge) {
-    this.store.dispatch(stopWatchingResults(challenge));
-    this.store.dispatch(loadResults(challenge));
+    this.store.dispatch(this.resultActions.stopWatchingResults(challenge));
+    this.store.dispatch(this.resultActions.loadResults(challenge));
+  }
+
+ increment() {
+    this.store.dispatch(trackIncrement(this.currentUser, this.currentChallenge));
+  }
+
+  decrement() {
+    this.store.dispatch(trackDecrement(this.currentUser, this.currentChallenge));
   }
 }

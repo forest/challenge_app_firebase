@@ -4,6 +4,7 @@ import {
   CHALLENGES_WATCHING_OFF,
   CHALLENGES_UPDATE
 } from '../actions/challenges';
+import { AUTH_LOGOUT } from '../actions/authentication';
 
 export interface IChallengesState {
   watching: boolean;
@@ -31,6 +32,9 @@ export function challenges(state: IChallengesState = initialState, action): ICha
       return Object.assign({}, state, {
         data: R.values(action.payload)
       });
+
+    case AUTH_LOGOUT:
+      return Object.assign({}, state, initialState);
 
     default:
       return state;

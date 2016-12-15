@@ -19,9 +19,7 @@ export function appState(state: IAppState = initialState, action): IAppState {
       });
 
     case AUTH_LOGOUT:
-      return Object.assign({}, state, {
-        currentUser: null
-      });
+      return Object.assign({}, state, initialState);
 
     case AUTH_STATE_CHANGED:
       return Object.assign({}, state, {
