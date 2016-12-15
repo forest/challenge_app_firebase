@@ -175,7 +175,8 @@
           {
             "name": "firebase",
             "path": "../node_modules/firebase/",
-            "main": "firebase"
+            "main": "firebase",
+            "exports": "firebase"
           },
           "reselect",
           "moment"

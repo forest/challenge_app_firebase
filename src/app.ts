@@ -1,12 +1,15 @@
-import { autoinject } from 'aurelia-framework';
+import { inject } from 'aurelia-framework';
 import { Router, RouterConfiguration } from 'aurelia-router';
+import { reduxStore } from './store';
+import { watchAuthenticated } from './actions/authentication';
 
-@autoinject
+@inject(reduxStore)
 export class App {
-
-  constructor() { }
-
   router: Router;
+
+  constructor(private store: any) {
+    this.store.dispatch(watchAuthenticated());
+  }
 
   configureRouter(config: RouterConfiguration, router: Router) {
     config.title = 'Swollen';

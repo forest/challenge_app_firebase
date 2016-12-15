@@ -1,10 +1,18 @@
 import { createSelector } from 'reselect'
 import * as R from 'ramda';
 import * as moment from 'moment';
+import { Types } from '../types'
 
 export const getConfig = (state) => state.config
 
 export const getResults = (state) => state.results
+export function getCurrentUser(state): Types.IAuthenticatedUser {
+  return state.appState.currentUser;
+}
+export function isUserLoggedIn(state): boolean {
+  return !!state.appState.currentUser;
+}
+
 
 export const getChallengesState = (state) => state.challenges
 export const getChallenges = (state) => state.challenges.items

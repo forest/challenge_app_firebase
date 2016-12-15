@@ -1,8 +1,9 @@
-import {bindable, customElement, inject, computedFrom} from 'aurelia-framework';
+import { bindable, customElement, inject, computedFrom } from 'aurelia-framework';
 import { Router } from 'aurelia-router';
 import { reduxStore } from '../../store';
-import { getCurrentChallenge, getChallenges } from '../../reducers/selectors'
 import { loadChallenges, stopWatchingChallenges, changeCurrentChallenge } from '../../actions/challenges'
+import { getCurrentUser, isUserLoggedIn, getCurrentChallenge, getChallenges } from '../../reducers/selectors'
+import { loginAction, logoutAction } from '../../actions/authentication'
 
 @customElement('nav-bar')
 @inject(reduxStore)
@@ -13,6 +14,8 @@ export class NavBar {
   isLoading: boolean = false;
   challenges: any = [];
   currentChallenge: any = null;
+  isLoggedIn: boolean = false;
+  currentUser: any = null;
 
   constructor(private store: any) {
     // subscribe to data changes
@@ -24,19 +27,16 @@ export class NavBar {
   }
 
   /**
-   * Load data on activation of the view.
-   *
-   * @param params (description)
-   * @param routeConfig (description)
+   * Load data when element is attached to the DOM.
    */
-  activate(params, routeConfig) {
+  attached() {
     this.store.dispatch(loadChallenges());
   }
 
   /**
    * Unsubscribe from state changes.
    */
-  deactivate() {
+  detached() {
     this.unsubscribe();
     this.store.dispatch(stopWatchingChallenges());
   }
@@ -47,8 +47,18 @@ export class NavBar {
   update() {
     const state = this.store.getState();
 
+    this.currentUser = getCurrentUser(state);
+    this.isLoggedIn = isUserLoggedIn(state);
     this.challenges = getChallenges(state);
     this.currentChallenge = getCurrentChallenge(state);
+  }
+
+  login() {
+    this.store.dispatch(loginAction());
+  }
+
+  logout() {
+    this.store.dispatch(logoutAction());
   }
 
   /**

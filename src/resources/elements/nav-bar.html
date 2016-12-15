@@ -23,18 +23,16 @@
         <li class="loader" if.bind="router.isNavigating">
           <i class="fa fa-spinner fa-spin fa-2x"></i>
         </li>
-        <!--<li class="nav-item">
-          <a class="nav-link">
-            <i class="fa fa-adjust"></i>
-          </a>
+        <li class="nav-item" if.bind="!isLoggedIn">
+          <a class="nav-link" click.delegate="login()">Login</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link">
-            <i class="fa fa-expand"></i>
-          </a>
-        </li>-->
-        <li class="nav-item">
-          <a class="nav-link">Forest<i class="fa fa-caret-down ml5"></i></a>
+        <li class="nav-item" if.bind="isLoggedIn">
+        </li>
+        <li class="nav-item dropdown" if.bind="isLoggedIn">
+          <a class="nav-link dropdown-toggle" id="loggedInDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${currentUser.displayName}</a>
+          <div class="dropdown-menu" aria-labelledby="loggedInDropdown">
+            <a class="dropdown-item" click.delegate="logout()">Logout</a>
+          </div>
         </li>
       </ul>
     </div>
