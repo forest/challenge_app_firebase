@@ -1,10 +1,14 @@
 <template>
   <div class="container-fluid mt10">
-    <p class="lead">Completed rounds: 2</p>
-
-    <div class="btn-group" role="group">
-      <button type="button" class="btn btn-lg btn-secondary" click.delegate="decrement()"><i class="fa fa-minus"></i></button>
-      <button type="button" class="btn btn-lg btn-success" click.delegate="increment()"><i class="fa fa-plus"></i></button>
+    <!--<p class="lead">Completed rounds: ${currentUserStats.total}</p>-->
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="btn-group" role="group" if.bind="currentChallenge">
+          <button type="button" class="btn btn-lg btn-secondary" click.delegate="decrement()"><i class="fa fa-minus"></i></button>
+          <button type="button" class="btn btn-lg btn-success" click.delegate="increment()"><i class="fa fa-plus"></i></button>
+        </div>
+      </div>
+      <p class="lead pl20" if.bind="!currentChallenge">Please select a challenge.</p>
     </div>
   </div>
 </template>

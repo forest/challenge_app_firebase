@@ -1,4 +1,4 @@
-export function members(state, action) {
+export function users(state, action) {
   return {
     "one": {
       "mark": true,

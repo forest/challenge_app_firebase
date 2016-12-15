@@ -4,8 +4,9 @@
       <i class="fa fa-handshake-o"></i>
     </a>
     <ul class="nav navbar-nav">
-      <li class="nav-item dropdown active" if.bind="currentChallenge">
-        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${currentChallenge.name}</a>
+      <li class="nav-item dropdown active" if.bind="challenges">
+        <a class="nav-link dropdown-toggle" if.bind="currentChallenge" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${currentChallenge.name}</a>
+        <a class="nav-link dropdown-toggle" if.bind="!currentChallenge" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Challenge</a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <a class="dropdown-item" href="#" click.delegate="changeCurrentChallenge(challenge)" repeat.for="challenge of challenges">${challenge.name}</a>
         </div>

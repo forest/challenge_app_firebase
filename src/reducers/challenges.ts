@@ -1,44 +1,38 @@
 import * as R from 'ramda';
+import {
+  CHALLENGES_WATCHING_ON,
+  CHALLENGES_WATCHING_OFF,
+  CHALLENGES_UPDATE
+} from '../actions/challenges';
 
 export interface IChallengesState {
   watching: boolean;
-  items: Array<any> | null;
+  data: Array<any>;
 }
 
 const initialState: IChallengesState = {
   watching: false,
-  items: null
+  data: []
 };
 
 export function challenges(state: IChallengesState = initialState, action): IChallengesState {
-  let payload = {
-    "one": {
-      "key": "one",
-      "name": "Push-up Challenge",
-      "started": "2016-12-08T17:01:50.468Z",
-      "finished": null,
-      "members": {
-        "mark": true,
-        "jeremy": true,
-        "forest": true
-      },
-      "winner": null
-    },
-    "two": {
-      "key": "two",
-      "name": "Wall Sit Challenge",
-      "started": null,
-      "finished": null,
-      "members": {
-        "mark": true,
-        "jeremy": true,
-        "forest": true
-      },
-      "winner": null
-    }
-  };
+  switch (action.type) {
+    case CHALLENGES_WATCHING_ON:
+      return Object.assign({}, state, {
+        watching: true
+      });
 
-  return Object.assign({}, state, {
-    items: R.values(payload)
-  });
+    case CHALLENGES_WATCHING_OFF:
+      return Object.assign({}, state, {
+        watching: false
+      });
+
+    case CHALLENGES_UPDATE:
+      return Object.assign({}, state, {
+        data: R.values(action.payload)
+      });
+
+    default:
+      return state;
+  }
 }

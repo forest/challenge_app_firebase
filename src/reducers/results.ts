@@ -1,50 +1,41 @@
-export function results(state, action) {
-  return data;
+import {
+  RESULTS_WATCHING_ON,
+  RESULTS_WATCHING_OFF,
+  RESULTS_UPDATE
+} from '../actions/results';
+import * as moment from 'moment';
+
+export interface IResultsState {
+  watching: boolean;
+  data: {};
 }
 
-const data = {
-    "one": {
-      "t1": {
-        "name": "mark",
-        "timestamp": "2016-12-12T18:01:50.000Z"
-      },
-      "t2": {
-        "name": "mark",
-        "timestamp": "2016-12-12T19:01:50.000Z"
-      },
-      "t3": {
-        "name": "jeremy",
-        "timestamp": "2016-12-12T18:22:50.000Z"
-      },
-      "t4": {
-        "name": "mark",
-        "timestamp": "2016-12-12T20:34:50.000Z"
-      },
-      "t5": {
-        "name": "forest",
-        "timestamp": "2016-12-12T21:51:50.000Z"
-      }
-    },
-    "two": {
-      "t11": {
-        "name": "mark",
-        "timestamp": "2016-12-07T18:01:50.000Z"
-      },
-      "t12": {
-        "name": "mark",
-        "timestamp": "2016-12-07T19:01:50.000Z"
-      },
-      "t13": {
-        "name": "jeremy",
-        "timestamp": "2016-12-07T18:22:50.000Z"
-      },
-      "t14": {
-        "name": "jeremy",
-        "timestamp": "2016-12-07T20:34:50.000Z"
-      },
-      "t15": {
-        "name": "forest",
-        "timestamp": "2016-12-07T21:51:50.000Z"
-      }
-    }
-  };
+const initialState: IResultsState = {
+  watching: false,
+  data: {}
+};
+
+export function results(state: IResultsState = initialState, action): IResultsState {
+  switch (action.type) {
+    case RESULTS_WATCHING_ON:
+      return Object.assign({}, state, {
+        watching: true
+      });
+
+    case RESULTS_WATCHING_OFF:
+      return Object.assign({}, state, {
+        watching: false
+      });
+
+    case RESULTS_UPDATE:
+      let challengeResults = {};
+      challengeResults[action.payload.challenge.key] = action.payload.results;
+
+      return Object.assign({}, state, {
+        data: challengeResults
+      });
+
+    default:
+      return state;
+  }
+}

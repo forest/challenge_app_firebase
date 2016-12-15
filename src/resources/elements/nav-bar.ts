@@ -1,12 +1,12 @@
 import { bindable, customElement, inject, computedFrom } from 'aurelia-framework';
 import { Router } from 'aurelia-router';
 import { reduxStore } from '../../store';
-import { loadChallenges, stopWatchingChallenges, changeCurrentChallenge } from '../../actions/challenges'
 import { getCurrentUser, isUserLoggedIn, getCurrentChallenge, getChallenges } from '../../reducers/selectors'
+import { ChallengeActions, loadChallenges, stopWatchingChallenges } from '../../actions/challenges'
 import { loginAction, logoutAction } from '../../actions/authentication'
 
 @customElement('nav-bar')
-@inject(reduxStore)
+@inject(reduxStore, ChallengeActions)
 export class NavBar {
   @bindable router: Router;
 
@@ -17,13 +17,12 @@ export class NavBar {
   isLoggedIn: boolean = false;
   currentUser: any = null;
 
-  constructor(private store: any) {
+  constructor(private store: any, private challengeActions: ChallengeActions) {
     // subscribe to data changes
     this.unsubscribe = this.store.subscribe(() => {
       this.update();
     });
     this.update();
-    this.store.dispatch(changeCurrentChallenge(this.challenges[0]));
   }
 
   /**
@@ -69,6 +68,6 @@ export class NavBar {
    * @memberOf App
    */
   changeCurrentChallenge(challenge) {
-    this.store.dispatch(changeCurrentChallenge(challenge));
+    this.store.dispatch(this.challengeActions.changeCurrentChallenge(challenge));
   }
 }

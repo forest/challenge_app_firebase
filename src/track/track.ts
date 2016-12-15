@@ -1,12 +1,14 @@
 import { inject, computedFrom } from 'aurelia-framework';
 import { reduxStore } from '../store';
 import { trackIncrement, trackDecrement } from '../actions/track';
-import { getCurrentChallenge } from '../reducers/selectors';
+import { getCurrentUser, getCurrentChallenge, getTodaysStatsForCurrentUser } from '../reducers/selectors';
 
 @inject(reduxStore)
 export class Track {
   unsubscribe: any = null;
   currentChallenge: any = null;
+  currentUser: any = null;
+  // currentUserStats: any = null;
 
   constructor(private store: any) {
     // subscribe to data changes
@@ -40,15 +42,17 @@ export class Track {
   update() {
     const state = this.store.getState();
 
+    this.currentUser = getCurrentUser(state);
     this.currentChallenge = getCurrentChallenge(state);
+    // this.currentUserStats = getTodaysStatsForCurrentUser(state);
   }
 
   increment() {
-    this.store.dispatch(trackIncrement('forest', this.currentChallenge));
+    this.store.dispatch(trackIncrement(this.currentUser, this.currentChallenge));
   }
 
   decrement() {
-    this.store.dispatch(trackDecrement('forest', this.currentChallenge));
+    this.store.dispatch(trackDecrement(this.currentUser, this.currentChallenge));
   }
 
 }
