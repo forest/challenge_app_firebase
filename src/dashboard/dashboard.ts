@@ -6,6 +6,7 @@ import { ResultActions } from '../actions/results'
 import { CHALLENGES_CURRENT_CHANGED } from '../actions/challenges'
 import { trackIncrement, trackDecrement } from '../actions/track';
 import { Types } from '../types'
+import * as moment from 'moment';
 
 @inject(reduxStore, EventAggregator, ResultActions)
 export class Dashboard {
@@ -14,6 +15,7 @@ export class Dashboard {
   todaysStats: any = [];
   currentChallenge: any = null;
   currentUser: any = null;
+  currentDate: any = moment();
 
   constructor(private store: any, private ea: EventAggregator, private resultActions: ResultActions) {
     // subscribe to data changes

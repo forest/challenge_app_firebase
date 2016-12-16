@@ -23,12 +23,30 @@ export class AuthenticationActions {
 
   watchAuthenticated() {
     return (dispatch, getState, firebase) => {
+      // watch for auth state changes
       firebase.auth().onAuthStateChanged(user => {
         dispatch({ type: AUTH_STATE_CHANGED, payload: user });
         if (user) {
           dispatch(this.challengeActions.loadChallenges());
         }
       });
+
+      // watch for redirects back after login
+      firebase.auth().getRedirectResult().then(result => {
+        let user = result.user;
+        if (user) {
+          // let credential = result.credential;
+          dispatch({ type: AUTH_LOGIN, payload: user });
+          dispatch(this.saveUser(user));
+        }
+      }).catch(error => {
+        // let errorCode = error.code;
+        // let errorMessage = error.message;
+        // let email = error.email;
+        // let credential = error.credential;
+
+        dispatch({ type: AUTH_LOGIN_FAILED, payload: error, error: error.message });
+      });;
     }
   }
 
@@ -48,25 +66,7 @@ export class AuthenticationActions {
       }
 
       // Call the Firebase signin method for our provider
-      // then take the successful or failed result and deal with
-      // it accordingly.
-      firebase.auth().signInWithPopup(provider).then((result: any) => {
-        // The token for this session
-        let authToken = result.credential.accessToken;
-
-        // The user object containing information about the current user
-        let user = result.user;
-
-        dispatch({ type: AUTH_LOGIN, payload: { token: authToken, user: user } });
-        dispatch(this.saveUser(user));
-      }).catch(error => {
-        // let errorCode = error.code;
-        // let errorMessage = error.message;
-        // let email = error.email;
-        // let credential = error.credential;
-
-        dispatch({ type: AUTH_LOGIN_FAILED, payload: error, error: error.message });
-      });
+      firebase.auth().signInWithRedirect(provider);
     }
   }
 

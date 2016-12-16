@@ -15,7 +15,7 @@ export function appState(state: IAppState = initialState, action): IAppState {
   switch (action.type) {
     case AUTH_LOGIN:
       return Object.assign({}, state, {
-        currentUser: action.payload.user
+        currentUser: action.payload
       });
 
     case AUTH_LOGOUT:

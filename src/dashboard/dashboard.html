@@ -1,9 +1,9 @@
 <template>
   <div class="container-fluid mt10">
-    <div class="row">
+    <div class="row" if.bind="currentChallenge">
       <div class="col-xs-12">
-        <!--<p class="lead">Statistics</p>-->
-        <table class="table table-striped" if.bind="currentChallenge">
+        <p class="lead">Statistics for ${currentDate | dateFormat:'MMMM Mo YYYY'}</p>
+        <table class="table table-striped">
           <thead>
             <tr>
               <th>Position</th>
@@ -24,9 +24,9 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row" if.bind="currentChallenge">
       <div class="col-xs-12">
-        <div class="btn-group" role="group" if.bind="currentChallenge">
+        <div class="btn-group" role="group">
           <button type="button" class="btn btn-lg btn-secondary" click.delegate="decrement()"><i class="fa fa-minus"></i></button>
           <button type="button" class="btn btn-lg btn-success" click.delegate="increment()"><i class="fa fa-plus"></i></button>
         </div>
