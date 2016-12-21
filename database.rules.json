@@ -1,11 +1,11 @@
 {
   "rules": {
     "user_names": {
-      "$key1": {
-        ".validate": "newData.isString()"
-      },
-      ".validate": "newData.hasChildren()",
-      ".read": "auth != null"
+      ".read": "auth != null",
+      "$user_id": {
+        ".validate": "newData.isString()",
+        ".write": "auth != null && auth.uid == $user_id"
+      }
     },
     "users": {
       "$user_id": {

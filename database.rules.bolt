@@ -1,8 +1,12 @@
 //
 // User Names
 //
-path /user_names is String[] {
+path /user_names {
   read() { isSignedIn() }
+}
+
+path /user_names/{user_id} is String {
+  write() { isCurrentUser(user_id) }
 }
 
 getUserName(user_id) { prior(root.user_names[user_id]) }
