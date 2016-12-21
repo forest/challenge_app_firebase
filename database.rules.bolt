@@ -1,0 +1,84 @@
+//
+// User Names
+//
+path /user_names is String[] {
+  read() { isSignedIn() }
+}
+
+getUserName(user_id) { prior(root.user_names[user_id]) }
+
+//
+// Users
+//
+path /users/{user_id} is User {
+  read() { isSignedIn() }
+  write() { isCurrentUser(user_id) }
+}
+
+type User {
+  name: String,
+  email: String,
+  photoURL: String
+}
+
+isUser(user_id) { prior(root.users[user_id]) != null }
+
+//
+// Challenges
+//
+path /challenges/{challenge_id} is Challenge {
+  read() { isChallengeMember(challenge_id) }
+}
+
+path /challenges/{challenge_id}/members/{member_id} {
+  validate() { isUser(member_id) }
+}
+
+type Challenge {
+  name: String
+}
+
+isChallenge(challenge_id) { prior(root.challenges[challenge_id]) != null }
+isChallengeMember(challenge_id) { isSignedIn() && prior(root.challenges[challenge_id]['members'][auth.uid]) != null }
+
+//
+// Results
+//
+path /results/{challenge_id} {
+  read() { isChallengeMember(challenge_id) }
+  validate() { isChallenge(challenge_id) }
+}
+
+path /results/{challenge_id}/{result_id} is Result {
+  write() { isChallengeMember(challenge_id) }
+}
+
+type Result {
+  uid: CurrentUserId,
+  timestamp: CurrentTimestamp
+}
+
+//
+// Helper Types
+//
+type CurrentTimestamp extends Number {
+  validate() { this == now }
+}
+
+type InitialTimestamp extends Number {
+  validate() { initial(this, now) }
+}
+
+type CurrentUserId extends String {
+  validate() { isCurrentUser(this) }
+}
+
+//
+// Helper Functions
+//
+isCurrentUser(uid) { isSignedIn() && auth.uid == uid }
+isSignedIn() { auth != null }
+createOnly(value) { prior(value) == null && value != null }
+
+// Returns true if the value is intialized to init, or if it retains it's prior value, otherwise.
+initial(value, init) { value == (prior(value) == null ? init : prior(value)) }

@@ -32,6 +32,8 @@
     "browser-sync": "^2.13.0",
     "connect-history-api-fallback": "^1.2.0",
     "event-stream": "^3.3.3",
+    "firebase-bolt": "^0.8.2",
+    "firebase-tools": "^3.2.0",
     "gulp": "github:gulpjs/gulp#4.0",
     "gulp-changed-in-place": "^2.0.3",
     "gulp-notify": "^2.2.0",

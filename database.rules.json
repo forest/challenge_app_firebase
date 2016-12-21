@@ -1,6 +1,66 @@
 {
   "rules": {
-    ".read": true,
-    ".write": true
+    "user_names": {
+      "$key1": {
+        ".validate": "newData.isString()"
+      },
+      ".validate": "newData.hasChildren()",
+      ".read": "auth != null"
+    },
+    "users": {
+      "$user_id": {
+        ".validate": "newData.hasChildren(['name', 'email', 'photoURL'])",
+        "name": {
+          ".validate": "newData.isString()"
+        },
+        "email": {
+          ".validate": "newData.isString()"
+        },
+        "photoURL": {
+          ".validate": "newData.isString()"
+        },
+        "$other": {
+          ".validate": "false"
+        },
+        ".read": "auth != null",
+        ".write": "auth != null && auth.uid == $user_id"
+      }
+    },
+    "challenges": {
+      "$challenge_id": {
+        ".validate": "newData.hasChildren(['name'])",
+        "name": {
+          ".validate": "newData.isString()"
+        },
+        "$other": {
+          ".validate": "false"
+        },
+        ".read": "auth != null && root.child('challenges').child($challenge_id).child('members').child(auth.uid).val() != null",
+        "members": {
+          "$member_id": {
+            ".validate": "root.child('users').child($member_id).val() != null"
+          }
+        }
+      }
+    },
+    "results": {
+      "$challenge_id": {
+        ".validate": "root.child('challenges').child($challenge_id).val() != null",
+        ".read": "auth != null && root.child('challenges').child($challenge_id).child('members').child(auth.uid).val() != null",
+        "$result_id": {
+          ".validate": "newData.hasChildren(['uid', 'timestamp'])",
+          "uid": {
+            ".validate": "newData.isString() && (auth != null && auth.uid == newData.val())"
+          },
+          "timestamp": {
+            ".validate": "newData.isNumber() && newData.val() == now"
+          },
+          "$other": {
+            ".validate": "false"
+          },
+          ".write": "auth != null && root.child('challenges').child($challenge_id).child('members').child(auth.uid).val() != null"
+        }
+      }
+    }
   }
 }
