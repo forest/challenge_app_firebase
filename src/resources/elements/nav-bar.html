@@ -5,18 +5,20 @@
     </a>
     <ul class="nav navbar-nav" if.bind="isLoggedIn">
       <li class="nav-item dropdown" if.bind="challenges">
-        <a class="nav-link dropdown-toggle clickable active" if.bind="currentChallenge" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${currentChallenge.name}</a>
-        <a class="nav-link dropdown-toggle clickable" if.bind="!currentChallenge" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Challenge</a>
+        <a class="nav-link dropdown-toggle clickable active" if.bind="currentChallenge" id="navbarDropdownMenuLink" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">${currentChallenge.name}</a>
+        <a class="nav-link dropdown-toggle clickable" if.bind="!currentChallenge" id="navbarDropdownMenuLink" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">Select Challenge</a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <a class="dropdown-item clickable" href="#" click.delegate="changeCurrentChallenge(challenge)" repeat.for="challenge of challenges">${challenge.name}</a>
         </div>
       </li>
-      <!--<li class="nav-item ${row.isActive ? 'active' : ''} ${row.settings.isHidden ? 'sr-only' : ''}" repeat.for="row of router.navigation">
+      <li class="nav-item ${row.isActive ? 'active' : ''} ${row.settings.isHidden ? 'sr-only' : ''}" repeat.for="row of router.navigation">
         <a class="nav-link" href.bind="row.href">
           ${row.title}
           <span class="sr-only">${row.isActive ? '(current)' : ''}</span>
         </a>
-      </li>-->
+      </li>
     </ul>
     <div class="float-xs-right">
       <ul class="nav navbar-nav">

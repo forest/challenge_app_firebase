@@ -15,7 +15,8 @@ export class App {
     config.title = 'Swollen';
     config.map([
       { route: ['','dashboard'], name: 'dashboard', moduleId: 'dashboard/dashboard', nav: true, title: 'Leader Board' },
-      { route: 'track', name: 'track', moduleId: 'track/track', nav: true, title: 'Track' }
+      // { route: 'track', name: 'track', moduleId: 'track/track', nav: true, title: 'Track' },
+      { route: 'challenges', name: 'challenges', moduleId: 'challenges/challenges', nav: true, title: 'Challenges' }
     ]);
 
     this.router = router;
