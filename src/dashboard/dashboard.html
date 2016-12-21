@@ -2,11 +2,11 @@
   <div class="container-fluid mt10">
     <div class="row" if.bind="currentChallenge">
       <div class="col-xs-12">
-        <p class="lead">Statistics for ${currentDate | dateFormat:'MMMM Mo YYYY'}</p>
+        <p class="lead"><span class="hidden-xs-down">Statistics for </span>${currentDate | dateFormat:'MMMM Mo YYYY'}</p>
         <table class="table table-striped">
           <thead>
             <tr>
-              <th>Position</th>
+              <th class="hidden-xs-down">Rank</th>
               <th>Name</th>
               <th>Rounds</th>
               <th>Total</th>
@@ -14,7 +14,7 @@
           </thead>
           <tbody>
             <tr repeat.for="stat of todaysStats | sort:'total'">
-              <th scope="row">${$index+1}</th>
+              <th class="hidden-xs-down" scope="row">${$index+1}</th>
               <td>${stat.name}</td>
               <td>${stat.total}</td>
               <td>${stat.total * 25}</td>
@@ -27,8 +27,8 @@
     <div class="row" if.bind="currentChallenge">
       <div class="col-xs-12">
         <div class="btn-group" role="group">
-          <button type="button" class="btn btn-lg btn-secondary" click.delegate="decrement()"><i class="fa fa-minus"></i></button>
-          <button type="button" class="btn btn-lg btn-success" click.delegate="increment()"><i class="fa fa-plus"></i></button>
+          <button type="button" class="btn btn-lg btn-secondary clickable" click.delegate="decrement()"><i class="fa fa-minus"></i></button>
+          <button type="button" class="btn btn-lg btn-success clickable" click.delegate="increment()"><i class="fa fa-plus"></i></button>
         </div>
       </div>
     </div>

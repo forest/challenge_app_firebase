@@ -1,14 +1,14 @@
 <template>
   <nav class="navbar navbar-light bg-faded full-width">
-    <a class="navbar-brand pt5" href="#">
+    <a class="navbar-brand pt5 clickable" route-href="route: dashboard">
       <i class="fa fa-handshake-o"></i>
     </a>
     <ul class="nav navbar-nav" if.bind="isLoggedIn">
-      <li class="nav-item dropdown active" if.bind="challenges">
-        <a class="nav-link dropdown-toggle" if.bind="currentChallenge" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${currentChallenge.name}</a>
-        <a class="nav-link dropdown-toggle" if.bind="!currentChallenge" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Challenge</a>
+      <li class="nav-item dropdown" if.bind="challenges">
+        <a class="nav-link dropdown-toggle clickable active" if.bind="currentChallenge" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${currentChallenge.name}</a>
+        <a class="nav-link dropdown-toggle clickable" if.bind="!currentChallenge" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Challenge</a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="#" click.delegate="changeCurrentChallenge(challenge)" repeat.for="challenge of challenges">${challenge.name}</a>
+          <a class="dropdown-item clickable" href="#" click.delegate="changeCurrentChallenge(challenge)" repeat.for="challenge of challenges">${challenge.name}</a>
         </div>
       </li>
       <!--<li class="nav-item ${row.isActive ? 'active' : ''} ${row.settings.isHidden ? 'sr-only' : ''}" repeat.for="row of router.navigation">
@@ -24,14 +24,12 @@
           <i class="fa fa-spinner fa-spin fa-2x"></i>
         </li>
         <li class="nav-item" if.bind="!isLoggedIn">
-          <a class="nav-link" click.delegate="login()">Login</a>
-        </li>
-        <li class="nav-item" if.bind="isLoggedIn">
+          <a class="nav-link clickable" click.delegate="login()">Login</a>
         </li>
         <li class="nav-item dropdown" if.bind="isLoggedIn">
-          <a class="nav-link dropdown-toggle" id="loggedInDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${currentUser.displayName}</a>
+          <a class="nav-link dropdown-toggle clickable" id="loggedInDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${currentUser.displayName}</a>
           <div class="dropdown-menu" aria-labelledby="loggedInDropdown">
-            <a class="dropdown-item" click.delegate="logout()">Logout</a>
+            <a class="dropdown-item clickable" click.delegate="logout()">Logout</a>
           </div>
         </li>
       </ul>
