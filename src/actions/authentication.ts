@@ -85,12 +85,11 @@ export class AuthenticationActions {
   private saveUser(user: Types.IAuthenticatedUser) {
     return (dispatch, getState, firebase) => {
       let updates = {};
-      updates[`users/${user.uid}`] = {
-        email: R.prop('email', R.head(user.providerData)),
-        name: user.displayName,
-        photoURL: user.photoURL
-      };
+      updates[`users/${user.uid}/email`] = R.prop('email', R.head(user.providerData));
+      updates[`users/${user.uid}/name`] = user.displayName;
+      updates[`users/${user.uid}/photoURL`] = user.photoURL;
       updates[`user_names/${user.uid}`] = user.displayName;
+
       firebase.database().ref().update(updates).catch(error => {
         // TODO: figure out good way to do error handling
         console.log(error.message);
