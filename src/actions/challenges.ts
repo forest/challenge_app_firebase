@@ -29,9 +29,9 @@ export class ChallengeActions {
     return { type: CHALLENGES_WATCHING_ON };
   }
 
-  stopWatchingChallenges() {
+  stopWatchingChallenges(user) {
     return (dispatch, getState, firebase) => {
-      firebase.database().ref('challenges').off();
+      firebase.database().ref(`users/${user.uid}/challenges`).off();
 
       dispatch({ type: CHALLENGES_WATCHING_OFF });
     }
@@ -41,54 +41,65 @@ export class ChallengeActions {
     return { type: CHALLENGES_UPDATE, payload: challenges };
   }
 
-  private watchChallenges() {
+  private watchChallenges(user) {
     return (dispatch, getState, firebase) => {
       const state = getState();
       const dbRoot = firebase.database().ref();
-      const challengesRef = dbRoot.child('challenges');
+      const challengesRef = dbRoot.child(`users/${user.uid}/challenges`);
 
       challengesRef.on('value', snapshot => {
-        let challenges = {};
+        // load all challenges this user is a member of
+        FirebaseUtils.collect(dbRoot, `users/${user.uid}/challenges`).then(collected => {
+          let challenges = R.reduce((obj, challenge) => {
+            obj[challenge.key] = challenge;
+            return obj;
+          }, {}, collected);
 
-        snapshot.forEach((challengeSnap) => {
-          challenges[challengeSnap.key] = FirebaseUtils.recordFromSnapshot(challengeSnap);
-
+          dispatch(this.updateChallenges(challenges));
+          return challenges;
+        }).then(challenges => {
           // load all user profiles for each challenge
-          FirebaseUtils.collect(dbRoot, `challenges/${challengeSnap.key}/members`, 'users').then(members => {
-            let indexedMembers = R.reduce((obj, member) => {
-              obj[member.key] = member;
-              return obj;
-            }, {}, members);
-            dispatch(loadUsers(indexedMembers));
+          R.keys(challenges).map(key => {
+            FirebaseUtils.collect(dbRoot, `challenges/${key}/members`, 'users').then(collected => {
+              let indexedMembers = R.reduce((obj, member) => {
+                obj[member.key] = member;
+                return obj;
+              }, {}, collected);
+
+              dispatch(loadUsers(indexedMembers));
+            })
           });
-        });
-
-        dispatch(this.updateChallenges(challenges));
-
-        // auto select the first challenge if not set
-        if (!getCurrentChallenge(state)) {
-          let first = R.head(R.values(challenges))
-          if (first) {
-            dispatch(this.changeCurrentChallenge(first));
+          return challenges;
+        }).then(challenges => {
+          // auto select the first challenge if not set
+          if (!getCurrentChallenge(state)) {
+            let first = R.head(R.values(challenges))
+            if (first) {
+              dispatch(this.changeCurrentChallenge(first));
+            }
           }
-        }
+        }).catch(error => {
+          // TODO: figure out good way to do error handling
+          console.log(error.message);
+          throw new Error(error.message);
+        });
       });
 
       return Promise.resolve();
     }
   }
 
-  private shouldLoadChallenges(state) {
-    return !state.challenges.watching;
+  private shouldLoadChallenges(user, state) {
+    return (user && !state.challenges.watching);
   }
 
-  loadChallenges() {
+  loadChallenges(user) {
     return (dispatch, getState) => {
       const state = getState();
 
-      if (this.shouldLoadChallenges(state)) {
+      if (this.shouldLoadChallenges(user, state)) {
         dispatch(this.startWatchingChallenges());
-        dispatch(this.watchChallenges());
+        dispatch(this.watchChallenges(user));
       } else {
         // Let the calling code know there's nothing to wait for.
         return Promise.resolve();

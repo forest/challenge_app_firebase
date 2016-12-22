@@ -26,7 +26,7 @@ export class Challenges {
    * @param routeConfig (description)
    */
   activate(params, routeConfig) {
-    this.store.dispatch(this.actions.loadChallenges());
+    // this.store.dispatch(this.actions.loadChallenges());
   }
 
   /**
@@ -34,7 +34,7 @@ export class Challenges {
    */
   deactivate() {
     this.unsubscribe();
-    this.store.dispatch(this.actions.stopWatchingChallenges());
+    // this.store.dispatch(this.actions.stopWatchingChallenges());
   }
 
   /**

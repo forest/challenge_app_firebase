@@ -32,7 +32,7 @@ export namespace FirebaseUtils {
    * @param {string} specificKey
    * @returns {*}
    */
-  export function collect(ref: firebase.database.Reference, path: string, specificKey: string): any {
+  export function collect(ref: firebase.database.Reference, path: string, specificKey: string = null): any {
     return new Promise(resolve => {
       const defaultLastInPath = defaultTo(last(split('/', path)));
       const relationPath = defaultLastInPath(specificKey);

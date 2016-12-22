@@ -4,7 +4,7 @@ import * as R from 'ramda';
 import { Types } from '../types'
 import { ChallengeActions } from './challenges'
 import { ResultActions } from './results'
-import { getCurrentChallenge } from '../reducers/selectors'
+import { getCurrentUser, getCurrentChallenge } from '../reducers/selectors'
 
 export const AUTH_LOGIN = 'AUTH_LOGIN';
 export const AUTH_LOGOUT = 'AUTH_LOGOUT';
@@ -26,9 +26,7 @@ export class AuthenticationActions {
       // watch for auth state changes
       firebase.auth().onAuthStateChanged(user => {
         dispatch({ type: AUTH_STATE_CHANGED, payload: user });
-        if (user) {
-          dispatch(this.challengeActions.loadChallenges());
-        }
+        dispatch(this.challengeActions.loadChallenges(user));
       });
 
       // watch for redirects back after login
@@ -76,7 +74,7 @@ export class AuthenticationActions {
 
       firebase.auth().signOut().then(() => {
         dispatch(this.resultActions.stopWatchingResults(getCurrentChallenge(state)));
-        dispatch(this.challengeActions.stopWatchingChallenges());
+        dispatch(this.challengeActions.stopWatchingChallenges(getCurrentUser(state)));
         dispatch({ type: AUTH_LOGOUT });
       }).catch(error => {
         throw new Error(error.message);

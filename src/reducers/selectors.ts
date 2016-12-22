@@ -26,7 +26,7 @@ const getChallengeResults = createSelector(
 export const getStats = createSelector(
   getChallengeResults,
   (results) => {
-    if (results) {
+    if (!R.isEmpty(results)) {
       let resultsData = R.values(results);
 
       return ChallengeStatistics.calculate(resultsData);
@@ -40,7 +40,7 @@ export const getTodaysStats = createSelector(
   getStats,
   getUsers,
   (stats, users: Array<Types.IUserProfile>) => {
-    if (stats) {
+    if (!R.isEmpty(stats) && !R.isEmpty(users)) {
       let todaysStats = stats[moment().format("L")] || [];
 
       // add user name for display
@@ -57,7 +57,7 @@ export const getTodaysStatsForCurrentUser = createSelector(
   getCurrentUser,
   getStats,
   (user, stats) => {
-    if (user && stats) {
+    if (!R.isNil(user) && !R.isEmpty(stats)) {
       let todaysStats = stats[moment().format("L")] || [];
       return R.find(R.propEq('uid', user.uid), todaysStats);
     }
